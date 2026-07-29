@@ -1,0 +1,29 @@
+services:
+  database:
+    image: mongo:8.0
+    container_name: ttt-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  app:
+    image: hdaum123/tech610-tttapp:1.2.0
+    container_name: ttt-app
+    ports:
+      - "3000:3000"
+    environment:
+      MONGODB_URI: mongodb://database:27017/tictactoe
+    depends_on:
+      - database
+
+  seed:
+    image: hdaum123/tech610-tttapp:1.2.0
+    container_name: ttt-seed
+    depends_on:
+      - app
+    command: node seeds/seed.js
+    restart: "no"
+
+volumes:
+  mongo-data:
