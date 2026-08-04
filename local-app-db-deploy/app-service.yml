@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-svc
+  namespace: default
+spec:
+  ports:
+  - nodePort: 30001 # range is 30000-32768
+    port: 3000
+    targetPort: 3000
+
+  selector:
+    app: nodejs  # this label connect this service to the deployment
+  
+  type: NodePort  # also use LoadBalancer - for local use cluster IP
